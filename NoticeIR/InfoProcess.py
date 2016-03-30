@@ -9,10 +9,10 @@ class InfoProcess(HTMLParser):
             HTMLParser.__init__(self)
             self.__links = []
             self.__site = site
-            if not os.path.exists(".\\Docs"):
-                os.mkdir(".\\Docs")
-            if not os.path.exists(".\\Docs\\"+site):
-                os.mkdir(".\\Docs\\"+site)
+            if not os.path.exists("..\\Docs"):
+                os.mkdir("..\\Docs")
+            if not os.path.exists("..\\Docs\\"+site):
+                os.mkdir("..\\Docs\\"+site)
         except ValueError:
             print(ValueError)
 
@@ -28,7 +28,7 @@ class InfoProcess(HTMLParser):
 
     def save(self, file, name):
         try:
-            fp = open(".\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb')
+            fp = open("..\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb')
             fp.write(file.encode('ascii', 'backslashreplace'))
         except ValueError:
             print(ValueError)
