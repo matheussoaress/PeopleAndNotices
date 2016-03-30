@@ -119,3 +119,4 @@ class Robot(threading.Thread):
 
     def run(self):
         self.execute()
+        print(self.__site+" foi finalizado!")
