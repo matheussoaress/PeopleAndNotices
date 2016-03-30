@@ -15,10 +15,17 @@ class InfoProcess(HTMLParser):
                 os.mkdir("..\\Docs\\"+site)
         except ValueError:
             print(ValueError)
+        except Exception:
+            print("Um erro desconhecido ocorreu no metodo InfoProcess.__init__")
 
     def setFile(self, name, file):
-        self.save( file, name)
-        self.feed(file)
+        try:
+            self.save( file, name)
+            self.feed(file)
+        except ValueError:
+            print(ValueError)
+        except Exception:
+            print("Um erro desconhecido ocorreu no metodo InfoProcess.setFile")
 
     def handle_starttag(self, tag, attrs):
         if(tag == 'a'):
@@ -32,6 +39,8 @@ class InfoProcess(HTMLParser):
             fp.write(file.encode('ascii', 'backslashreplace'))
         except ValueError:
             print(ValueError)
+        except Exception:
+            print("Um erro desconhecido ocorreu no metodo InfoProcess.save")
         else:
             fp.close()
 

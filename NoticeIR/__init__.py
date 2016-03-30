@@ -2,38 +2,24 @@ from NoticeIR.Robot import Robot
 
 threads = []
 
-site = "globo.com"
-url = "http://www.globo.com/"
-robot = "http://g1.globo.com/robots.txt"
+sites = []
+sites.append(["globo","http://g1.globo.com/", "http://g1.globo.com/robots.txt"])
+sites.append(["terra", "http://noticias.terra.com.br/brasil/", "http://www.terra.com.br/robots.txt"])
+sites.append(["uol", "http://noticias.uol.com.br/", "http://www.folha.uol.com.br/robots.txt"])
+sites.append(["folha", "http://www.folha.uol.com.br/", "http://www.folha.uol.com.br/robots.txt"])
+sites.append(["r7", "http://noticias.r7.com/brasil", "http://www.r7.com/robots.txt"])
+sites.append(["bol", "http://noticias.bol.uol.com.br/brasil/", "https://www.bol.com/robots.txt"])
+sites.append(["ig", "http://ultimosegundo.ig.com.br/politica/", ""])
+sites.append(["estadao", "http://www.estadao.com.br/", "http://www.estadao.com.br/robots.txt"])
+sites.append(["ebc", "http://www.ebc.com.br/noticias", ""])
 
-a = Robot(site=site, url=url, robotTxt=robot)
-a.start()
-threads.append(a)
+bots = []
 
-site = "terra.com.br"
-url = "http://www.terra.com.br/"
-robot = "http://www.terra.com.br/robots.txt"
+for site in sites:
+    bots.append(Robot(site=site[0], url=site[1], robotTxt=site[2]))
 
-b = Robot(site=site, url=url, robotTxt=robot)
-b.start()
-threads.append(b)
+for bot in bots:
+    bot.start()
 
-site = "uol.com.br/"
-url = "http://www.uol.com.br/"
-robot = "http://www.folha.uol.com.br/robots.txt"
-
-c = Robot(site=site, url=url, robotTxt=robot)
-c.start()
-threads.append(c)
-
-site = "folha.uol.com.br/"
-url = "http://www.folha.uol.com.br/"
-robot = "http://www.folha.uol.com.br/robots.txt"
-
-d = Robot(site=site, url=url, robotTxt=robot)
-d.start()
-threads.append(d)
-
-for tr in threads:
-    tr.join()
-
+for bot in bots:
+    bot.join()
