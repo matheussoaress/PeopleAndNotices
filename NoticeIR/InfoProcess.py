@@ -1,13 +1,22 @@
 from html.parser import HTMLParser
-from html.entities import codepoint2name
+import os
+import binascii
 
 class InfoProcess(HTMLParser):
 
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self.__links = []
+    def __init__(self, site):
+        try:
+            HTMLParser.__init__(self)
+            self.__links = []
+            self.__site = site
+            if not os.path.exists(".\\Docs"):
+                os.mkdir(".\\Docs")
+            if not os.path.exists(".\\Docs\\"+site):
+                os.mkdir(".\\Docs\\"+site)
+        except ValueError:
+            print(ValueError)
 
-    def setFile(self, file, name):
+    def setFile(self, name, file):
         self.save( file, name)
         self.feed(file)
 
@@ -18,5 +27,13 @@ class InfoProcess(HTMLParser):
                     self.__links.append(attr[1])
 
     def save(self, file, name):
-        fp = open(name)
-        fp.write(file)
+        try:
+            fp = open(".\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb')
+            fp.write(file.encode('ascii', 'backslashreplace'))
+        except ValueError:
+            print(ValueError)
+        else:
+            fp.close()
+
+    def getLinks(self):
+        return self.__links
