@@ -8,6 +8,7 @@ class InfoProcess(HTMLParser):
         try:
             HTMLParser.__init__(self)
             self.__links = []
+            self.__meta = []
             self.__site = site
             if not os.path.exists("..\\Docs"):
                 os.mkdir("..\\Docs")
@@ -25,9 +26,18 @@ class InfoProcess(HTMLParser):
         except ValueError:
             print(ValueError)
         except Exception:
-            print("Um erro desconhecido ocorreu no metodo InfoProcess.setFile")
+            print(Exception.mro())
 
     def handle_starttag(self, tag, attrs):
+        if(tag == 'meta'):
+            for attr in attrs:
+                if attr[0] == 'content':
+                    atInfo = attr[1]
+                    if atInfo.find('NOFOLLOW')>=0:
+                        raise Exception("Site não coletavel")
+                    else:
+                        self.__meta.append(attr[1])
+
         if(tag == 'a'):
             for attr in attrs:
                 if attr[0] == 'href':
@@ -40,9 +50,18 @@ class InfoProcess(HTMLParser):
         except ValueError:
             print(ValueError)
         except Exception:
-            print("Um erro desconhecido ocorreu no metodo InfoProcess.save")
+            try:
+                fp.write(file.encode('utf-8', 'ignore'))
+            except Exception as e:
+                print(repr(e))
+                print("Um erro desconhecido ocorreu no metodo InfoProcess.save")
+            else:
+                fp.close()
         else:
             fp.close()
 
     def getLinks(self):
         return self.__links
+
+    def getMeta(self):
+        return self.__meta

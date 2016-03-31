@@ -65,6 +65,7 @@ class Robot(threading.Thread):
                     print(url)
                     hs = hashlib.sha512()
                     hs.update(url.encode('ascii', 'backslashreplace'))
+
                     if((self.__validaUrl(url)) and (hs.hexdigest() not in self.__viewed) and (url.find(self.__site)>=0)):
                         site = self.__request(url)
                         if((site != None) and (site.status == 200)):

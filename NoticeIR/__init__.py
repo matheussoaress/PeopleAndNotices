@@ -12,6 +12,7 @@ sites.append(["bol", "http://noticias.bol.uol.com.br/brasil/", "https://www.bol.
 sites.append(["ig", "http://ultimosegundo.ig.com.br/politica/", ""])
 sites.append(["estadao", "http://www.estadao.com.br/", "http://www.estadao.com.br/robots.txt"])
 sites.append(["ebc", "http://www.ebc.com.br/noticias", ""])
+sites.append(["em", "http://www.em.com.br/", "http://www.em.com.br/robots.txt"])
 
 bots = []
 
@@ -19,6 +20,7 @@ for site in sites:
     bots.append(Robot(site=site[0], url=site[1], robotTxt=site[2]))
 
 for bot in bots:
+    # bot.execute()
     bot.start()
 
 for bot in bots:
