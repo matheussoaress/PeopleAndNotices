@@ -45,13 +45,18 @@ class InfoProcess(HTMLParser):
 
     def save(self, file, name):
         try:
-            fp = open("..\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb')
-            fp.write(file.encode('ascii', 'backslashreplace'))
+            pre = "ÁáÂâÀàÅåÃãÄäÆæÉéÊêÈèËëÐðÍíÎîÌìÏïÓóÔôÒòØøÕõÖöÚúÛûÙùÜüÇçÑñ®©ÝýÞþß'\"!@#$%¨&*()_+=-¹²³£¢¬§`{}^<>:?´[~],.;/ªº°"
+            pos = "AaAaAaAaAaAaEeEeEeEeEeEeIiIiIiIiOoOoOoOoOoOoUuUuUuUuUuNn_cYy__B________________123____________________aoo"
+            trans = str.maketrans(pre, pos)
+            name = name.traslate(trans)
+            with open("..\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb') as fp:
+                fp.write(file.encode('ascii', 'backslashreplace'))
         except ValueError:
             print(ValueError)
         except Exception:
             try:
-                fp.write(file.encode('utf-8', 'ignore'))
+                with open("..\\Docs\\"+self.__site+"\\"+name+".dtpn", 'wb') as fp:
+                    fp.write(file.encode('utf-8', 'ignore'))
             except Exception as e:
                 print(repr(e))
                 print("Um erro desconhecido ocorreu no metodo InfoProcess.save")

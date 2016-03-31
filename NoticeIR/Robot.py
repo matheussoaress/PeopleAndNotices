@@ -19,6 +19,7 @@ class Robot(threading.Thread):
             self.__site = site
             self.__list = [url]
             self.__viewed = {}
+            self.__content = {}
         except ValueError:
             print(ValueError)
         except Exception:
@@ -39,15 +40,16 @@ class Robot(threading.Thread):
             request = urllib.request.build_opener()
             request.add_header = [('User-agent', 'robotunibhmatheus')]
             return request.open(url)
-        except urllib.error.ContentTooShortError:
-            print("Ocorreu um erro de Urllib")
-        except urllib.error.HTTPError:
-            print("Ocorreu um erro de Urllib")
-        except urllib.error.URLError:
-            print("Ocorreu um erro de Urllib")
-        except ValueError:
-            print(ValueError)
-        except Exception:
+        except urllib.error.ContentTooShortError as e:
+            print("Ocorreu um erro de Urllib: "+repr(e))
+        except urllib.error.HTTPError as e:
+            print("Ocorreu um erro de Urllib: "+repr(e))
+        except urllib.error.URLError as e:
+            print("Ocorreu um erro de Urllib: "+repr(e))
+        except ValueError as e:
+            print(repr(e))
+        except Exception as e:
+            print(repr(e))
             print("Um erro desconhecido ocorreu no metodo Robot.__request")
 
     def __validaUrl(self, url):
@@ -68,31 +70,32 @@ class Robot(threading.Thread):
 
                     if((self.__validaUrl(url)) and (hs.hexdigest() not in self.__viewed) and (url.find(self.__site)>=0)):
                         site = self.__request(url)
-                        if((site != None) and (site.status == 200)):
-                            self.__process(url, site.read().decode('utf-8', 'backslashreplace'))
+                        if(site != None) and (site.status == 200):
+                            hsC = hashlib.sha512()
+                            content = site.read()
+                            hsC.update(content)
+                            if hsC.hexdigest() not in self.__content:
+                                self.__process(url, content.decode('utf-8', 'backslashreplace'))
+                                self.__content[hsC.hexdigest()] = url
+                            else:
+                                print("A url "+url+"ja joi capturada")
                         num+=1
                         time.sleep(30)
                     if hs.hexdigest() not in self.__viewed:
                         self.__viewed[hs.hexdigest()] = url
-                except urllib.error.ContentTooShortError:
-                    print("Ocorreu um erro de Urllib")
-                except urllib.error.HTTPError:
-                    print("Ocorreu um erro de Urllib")
-                except urllib.error.URLError:
-                    print("Ocorreu um erro de Urllib")
-                except ValueError:
-                    print(ValueError)
-                except Exception:
+                except urllib.error.ContentTooShortError as e:
+                    print("Ocorreu um erro de Urllib: "+repr(e))
+                except urllib.error.HTTPError as e:
+                    print("Ocorreu um erro de Urllib: "+repr(e))
+                except urllib.error.URLError as e:
+                    print("Ocorreu um erro de Urllib: "+repr(e))
+                except ValueError as e:
+                    print(repr(e))
+                except Exception as e:
+                    print(repr(e))
                     print("Um erro desconhecido ocorreu no loop e foi ignorado")
-        except urllib.error.ContentTooShortError:
-            print("Ocorreu um erro de Urllib")
-        except urllib.error.HTTPError:
-            print("Ocorreu um erro de Urllib")
-        except urllib.error.URLError:
-            print("Ocorreu um erro de Urllib")
-        except ValueError:
-            print(ValueError)
-        except Exception:
+        except Exception as e:
+            print(repr(e))
             print("Um erro desconhecido ocorreu no metodo Robot.execute que interrompeu o uso")
 
 
@@ -119,5 +122,6 @@ class Robot(threading.Thread):
             print("Um erro desconhecido ocorreu no metodo Robot.__process")
 
     def run(self):
+        print(self.__site+" foi iniciado!")
         self.execute()
         print(self.__site+" foi finalizado!")
