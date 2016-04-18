@@ -9,6 +9,13 @@ from NoticeIR.InfoProcess import InfoProcess
 
 class Robot(threading.Thread):
 
+    ''' 
+    '  Método construtor da classe:
+    '  @input String site
+    '  @input String url
+    '  @input String robotTxt
+    '
+    ''' 
     def __init__(self, site, url, robotTxt):
         try:
             threading.Thread.__init__(self)
@@ -25,6 +32,11 @@ class Robot(threading.Thread):
         except Exception:
             print("Um erro desconhecido ocorreu no metodo Robot.__init__")
 
+    '''
+    '  Configura o protocolo de exclusão com base no endereço do Robots.txt
+    '  @input String robotTxt
+    '
+    '''
     def setRobotTxt(self, robotTxt):
         try:
             self.__rp = urllib.robotparser.RobotFileParser()
@@ -35,10 +47,17 @@ class Robot(threading.Thread):
         except Exception:
             print("Um erro desconhecido ocorreu no metodo Robot.setRobot")
 
+    '''
+    '  Método reponsável por fazer a requisição do site para o servidor.
+    '  @input String url
+    '
+    '  @return urllib.response
+    '
+    '''
     def __request(self, url):
         try:
             request = urllib.request.build_opener()
-            request.add_header = [('User-agent', 'robotunibhmatheus')]
+            request.add_header = [('User-agent', 'matheushssrobot/site:matheushsoaress.wordpress.com')]
             return request.open(url)
         except urllib.error.ContentTooShortError as e:
             print("Ocorreu um erro de Urllib: "+repr(e))
@@ -52,12 +71,22 @@ class Robot(threading.Thread):
             print(repr(e))
             print("Um erro desconhecido ocorreu no metodo Robot.__request")
 
+    '''
+    '  Verifica se é possível capturar a url
+    '  @input String url
+    '
+    '  @return boolean
+    '''
     def __validaUrl(self, url):
         if self.__robotTxt:
             return self.__rp.can_fetch("*", url)
         else:
             return True
 
+    '''
+    '  Inicia a execução da busca, verifica se o site já foi buscado e faz o sistema esperar 30 segundos até a próxima requisição
+    '
+    '''
     def execute(self):
         try:
             num = 0
@@ -99,6 +128,12 @@ class Robot(threading.Thread):
             print("Um erro desconhecido ocorreu no metodo Robot.execute que interrompeu o uso")
 
 
+    '''
+    '  Realiza o processamento texto do documento e adiciona os links achados na lista de espera
+    '  @input String url
+    '  @input String 
+    '
+    '''
     def __process(self, url, info):
         try:
             link = url.split("/")
@@ -121,6 +156,10 @@ class Robot(threading.Thread):
         except Exception:
             print("Um erro desconhecido ocorreu no metodo Robot.__process")
 
+    '''
+    '  Inicia a thread
+    '
+    '''
     def run(self):
         print(self.__site+" foi iniciado!")
         self.execute()

@@ -4,6 +4,11 @@ import binascii
 
 class InfoProcess(HTMLParser):
 
+    ''' 
+    '  Método construtor da classe:
+    '  @input String site
+    '
+    '''
     def __init__(self, site):
         try:
             HTMLParser.__init__(self)
@@ -19,6 +24,12 @@ class InfoProcess(HTMLParser):
         except Exception:
             print("Um erro desconhecido ocorreu no metodo InfoProcess.__init__")
 
+    ''' 
+    '  Inicia o processamento do documento e o salva
+    '  @input String name
+    '  @input String file
+    '
+    '''
     def setFile(self, name, file):
         try:
             self.save( file, name)
@@ -28,6 +39,12 @@ class InfoProcess(HTMLParser):
         except Exception:
             print(Exception.mro())
 
+    ''' 
+    '  Captura as tags e seus atributos e verifica se o site pode ser coletado.
+    '  @input String tag
+    '  @input String attrs
+    '
+    '''
     def handle_starttag(self, tag, attrs):
         if(tag == 'meta'):
             for attr in attrs:
@@ -42,7 +59,12 @@ class InfoProcess(HTMLParser):
             for attr in attrs:
                 if attr[0] == 'href':
                     self.__links.append(attr[1])
-
+    ''' 
+    '  Sava o documento no disco
+    '  @input String file
+    '  @input String name
+    '
+    '''
     def save(self, file, name):
         try:
             pre = "ÁáÂâÀàÅåÃãÄäÆæÉéÊêÈèËëÐðÍíÎîÌìÏïÓóÔôÒòØøÕõÖöÚúÛûÙùÜüÇçÑñ®©ÝýÞþß'\"!@#$%¨&*()_+=-¹²³£¢¬§`{}^<>:?´[~],.;/ªº°"
@@ -65,8 +87,20 @@ class InfoProcess(HTMLParser):
         else:
             fp.close()
 
+    ''' 
+    '  Retorna a lista de links capturados
+    '
+    '  @return String[]
+    '
+    '''
     def getLinks(self):
         return self.__links
-
+        
+    ''' 
+    '  Retorna a lista de metadados capturados
+    '
+    '  @return String[]
+    '
+    '''
     def getMeta(self):
         return self.__meta

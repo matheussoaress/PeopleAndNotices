@@ -13,6 +13,8 @@ sites.append(["ig", "http://ultimosegundo.ig.com.br/politica/", ""])
 sites.append(["estadao", "http://www.estadao.com.br/", "http://www.estadao.com.br/robots.txt"])
 sites.append(["ebc", "http://www.ebc.com.br/noticias", ""])
 sites.append(["em", "http://www.em.com.br/", "http://www.em.com.br/robots.txt"])
+sites.append(["bing", "https://www.bing.com/news", "https://www.bing.com/robots.txt"])
+sites.append(["msn", "http://www.msn.com/pt-br/noticias", "https://www.bing.com/robots.txt"])
 
 bots = []
 
